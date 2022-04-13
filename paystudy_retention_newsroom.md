@@ -771,8 +771,10 @@
       filter(year_type!="active") %>% 
       pivot_wider(names_from="year_type", values_from="n") %>% 
       mutate(category=case_when(
-        hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
+        terminated==hired ~ "Same",
+        hired > terminated ~ "More hired than left",
+        terminated > hired ~ "More left than hired",
+        TRUE ~ ""
       )) %>% 
       kable()
 
@@ -820,7 +822,7 @@
 <td style="text-align: left;">Prefer not to disclose</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: left;">More left than hired</td>
+<td style="text-align: left;">Same</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Other</td>
@@ -848,8 +850,10 @@
       filter(hired>=5 & terminated>=5) %>% 
       mutate(category=case_when(
         hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
-      ))%>% 
+        terminated>hired ~ "More left than hired",
+        terminated==hired ~ "Same",
+        TRUE ~ ""
+      )) %>% 
       kable()
 
 <table>
@@ -965,7 +969,9 @@
       pivot_wider(names_from="year_type", values_from="n") %>% 
       mutate(category=case_when(
         hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
+        terminated>hired ~ "More left than hired",
+        terminated==hired ~ "Same",
+        TRUE ~ ""
       )) %>% 
       kable()
 
@@ -1012,8 +1018,10 @@
       filter(hired>=5 & terminated>=5) %>% 
       mutate(category=case_when(
         hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
-      ))%>% 
+        terminated>hired ~ "More left than hired",
+        terminated==hired ~ "Same",
+        TRUE ~ ""
+      )) %>% 
       kable()
 
 <table>
@@ -1133,8 +1141,10 @@
       #filter(hired>=5 & terminated>=5) %>% 
       mutate(category=case_when(
         hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
-      ))%>% 
+        terminated>hired ~ "More left than hired",
+        terminated==hired ~ "Same",
+        TRUE ~ ""
+      )) %>% 
       kable()
 
 <table>
@@ -1187,7 +1197,7 @@
 <td style="text-align: right;">2020</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: left;">More left than hired</td>
+<td style="text-align: left;">Same</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">News</td>
@@ -1195,7 +1205,7 @@
 <td style="text-align: right;">2020</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: left;">More left than hired</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">News</td>
@@ -1227,10 +1237,12 @@
       filter(year_type!="active") %>% 
       pivot_wider(names_from="year_type", values_from="n") %>% 
       #filter(hired>=5 & terminated>=5) %>% 
-      mutate(category=case_when(
+       mutate(category=case_when(
         hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
-      ))%>% 
+        terminated>hired ~ "More left than hired",
+        terminated==hired ~ "Same",
+        TRUE ~ ""
+      )) %>% 
       kable()
 
     #12/(12+5+54)=.17
@@ -1246,8 +1258,10 @@
       pivot_wider(names_from="year_type", values_from="n") %>% 
       mutate(category=case_when(
         hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
-      ))%>% 
+        terminated>hired ~ "More left than hired",
+        terminated==hired ~ "Same",
+        TRUE ~ ""
+      )) %>% 
       kable()
 
 <table>
@@ -1425,8 +1439,10 @@
       filter(hired>=5 & terminated>=5) %>% 
       mutate(category=case_when(
         hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
-      ))
+        terminated>hired ~ "More left than hired",
+        terminated==hired ~ "Same",
+        TRUE ~ ""
+      )) 
 
     kable(turnoverbydesk)
 
@@ -1519,7 +1535,9 @@
       filter(hired>=5 & terminated>=5) %>% 
       mutate(category=case_when(
         hired>terminated ~ "More hired than left",
-        TRUE ~ "More left than hired"
+        terminated>hired ~ "More left than hired",
+        terminated==hired ~ "Same",
+        TRUE ~ ""
       ))
     kable(newsroom_desks)
 
@@ -1539,7 +1557,7 @@
 <td style="text-align: left;">Emerging News Products</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: left;">More left than hired</td>
+<td style="text-align: left;">Same</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">person of color</td>

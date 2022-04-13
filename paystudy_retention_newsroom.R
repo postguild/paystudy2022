@@ -6,7 +6,7 @@ library(knitr)
 ## Retention
 
 at20 <- read_csv("raw_data/active_wd_2020.csv") %>% 
-  select(employee_id, hire_date) %>% 
+  select(employee_id, hire_date, race_ethnicity) %>% 
   mutate(year20=T)
 
 active_21 <- read_csv("raw_data/active_wd_2021.csv")  %>% 
@@ -750,7 +750,9 @@ df %>%
   pivot_wider(names_from="year_type", values_from="n") %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
   )) %>% 
   kable()
 
@@ -763,8 +765,10 @@ df %>%
   filter(hired>=5 & terminated>=5) %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
-  ))%>% 
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
+  )) %>% 
   kable()
 
 #In the Newsroom, on the other hand, more workers were hired than left. For every employee that left, 1.8 employees were hired. 
@@ -775,7 +779,9 @@ df %>%
   pivot_wider(names_from="year_type", values_from="n") %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
   )) %>% 
   kable()
 #370/205 = 1.8
@@ -790,8 +796,10 @@ df %>%
   filter(hired>=5 & terminated>=5) %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
-  ))%>% 
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
+  )) %>% 
   kable()
 #37/31 = 1.2
 
@@ -805,8 +813,10 @@ df %>%
   #filter(hired>=5 & terminated>=5) %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
-  ))%>% 
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
+  )) %>% 
   kable()
 #10/29 = .34
 #9/51 =.176 or 1/5=.2
@@ -818,11 +828,13 @@ view_this <-df %>%
   count(dept, race_grouping, data_year, year_type) %>% 
   filter(year_type!="active") %>% 
   pivot_wider(names_from="year_type", values_from="n") %>% 
-  #filter(hired>=5 & terminated>=5) %>% 
+  filter(hired>=5 & terminated>=5) %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
-  ))%>% 
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
+  )) %>% 
   kable()
 
 #12/(12+5+54)=.17
@@ -838,8 +850,10 @@ df %>%
   pivot_wider(names_from="year_type", values_from="n") %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
-  ))%>% 
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
+  )) %>% 
   kable()
 
 #43/(43+7+32) = .52
@@ -891,9 +905,10 @@ turnoverbydesk <- df %>%
   filter(hired>=5 & terminated>=5) %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
-  ))
-
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
+  )) 
 kable(turnoverbydesk)
 
 #Within the Newsroom, White employees were often hired at a much higher rate than employees of color. In some sections, fewer than five employees of color were hired and therefore couldn’t even be counted within the data in order to protect workers’ privacy. This was the case for Local, Financial and Multiplatform, where 14, 22 and 13 White employees, respectively, were hired from 2016 to 2021.
@@ -908,8 +923,10 @@ newsroom_desks <- df %>%
   filter(hired>=5 & terminated>=5) %>% 
   mutate(category=case_when(
     hired>terminated ~ "More hired than left",
-    TRUE ~ "More left than hired"
-  ))
+    terminated<hired ~ "More left than hired",
+    terminated==hired ~ "Same",
+    TRUE ~ ""
+  )) 
 kable(newsroom_desks)
 
 library(vroom)
